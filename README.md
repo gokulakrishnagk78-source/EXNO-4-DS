@@ -23,7 +23,38 @@ The feature selection techniques used are:
 2.Wrapper Method
 3.Embedded Method
 
-# CODING AND OUTPUT:
-       # INCLUDE YOUR CODING AND OUTPUT SCREENSHOTS HERE
+# CODING :
+```
+       import pandas as pd
+from sklearn.preprocessing import StandardScaler
+from sklearn.feature_selection import SelectKBest, f_classif
+
+df = pd.read_csv("C:\\Users\\krishna\\Downloads\\bmi.csv")
+df.drop_duplicates(inplace=True)
+df.dropna(inplace=True)
+
+df['Gender'] = df['Gender'].map({'Male': 0, 'Female': 1})
+X = df.drop('Index', axis=1)
+y = df['Index']
+
+scaler = StandardScaler()
+X_scaled = scaler.fit_transform(X)
+
+selector = SelectKBest(score_func=f_classif, k=2)
+X_selected = selector.fit_transform(X_scaled, y)
+
+selected_columns = X.columns[selector.get_support()]
+df_final = pd.DataFrame(X_selected, columns=selected_columns)
+df_final['Index'] = y.reset_index(drop=True)
+
+df_final.to_csv("Selected_Scaled_BMI.csv", index=False)
+```
+#OUTPUT:
+![Screenshot_17-10-2025_111236_localhost](https://github.com/user-attachments/assets/10b9c220-fb5c-4aca-9da4-4f70eb729643)
+![Screenshot_17-10-2025_111250_localhost](https://github.com/user-attachments/assets/ef71f2e4-5b6a-4c62-a1f2-793402f50c33)
+![Screenshot_17-10-2025_111311_localhost](https://github.com/user-attachments/assets/7f9ef8bf-2bef-4b91-b228-2ab97535d158)
+
+
+
 # RESULT:
-       # INCLUDE YOUR RESULT HERE
+ the given data is read and feature scaling,feature selection of the given data is performed successfully and processed dataset is saved as Selected_Scaled_BMI.csv
